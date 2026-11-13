@@ -35,7 +35,7 @@ In Science Olympiad's **Detector Building** event, a team of two builds a studen
 
 ## 📋 Competition Context
 
-Summarized from the Science Olympiad Division C rules manual (2023 edition; check the current manual for your season):
+Summarized from the Science Olympiad Division C Rules Manual (2023 edition). Rules can change between seasons, so check the current manual before reusing this design:
 
 | Requirement | How this project meets it |
 |---|---|
@@ -201,3 +201,16 @@ balance-beam/
 - **Auto-zero and drift tracking:** the firmware already collects zero readings but does not yet use them to correct drift.
 - **Firmware cleanup:** remove the unused warm-up loop and commented-out code, and move constants (such as the 1.859 V full-scale value) into one config block.
 - **Data logging:** stream each reading to a CSV over serial to build a larger dataset and test temperature effects.
+
+## 🙋 Individual Contributions
+
+Built by a two-person team. Together, we:
+
+- Designed and machined the 6061-T6 aluminum load cells, base plate, and weighing plate (band saw, belt sander, hand mill).
+- Designed the strain-gauge placement guide in Onshape and laser-cut it from Mylar on a Glowforge.
+- Bonded the strain gauges, soldered the shielded cable and header, and assembled the circuit on a breadboard.
+- Wrote the MicroPython firmware: the AD7715 SPI driver, zero and full-scale system calibration, 25-sample averaging, and LED zone logic.
+- Collected the 26-trial calibration dataset and wrote the competition design log.
+- Added the post-competition analysis in this repo (error metrics, plots, and an estimate of the event accuracy score).
+
+---
