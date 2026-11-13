@@ -10,8 +10,6 @@
 ![SPI](https://img.shields.io/badge/SPI-4B2E83?style=flat-square)
 ![Analysis](https://img.shields.io/badge/analysis-pandas%20%7C%20matplotlib-150458?style=flat-square)
 
-<img src="images/device-overview.jpg" alt="The finished device: ESP32 breadboard circuit connected by shielded cable to the aluminum weighing plate" width="720">
-
 </div>
 
 ---
@@ -80,8 +78,6 @@ flowchart LR
 - **Controller:** SparkFun ESP32 IoT RedBoard. Bypass capacitors (10 µF tantalum and 0.1 µF Mylar) keep the supply clean.
 - **Wiring:** 4-conductor shielded cable from the weighing plate to a 16-pin header on the breadboard.
 
-<img src="images/device-breadboard.jpg" alt="Annotated breadboard showing the ESP32, AD7715, INA125P, buttons, and LEDs" width="720">
-
 ### Pin map (from `src/main.py`)
 
 | Signal | ESP32 GPIO |
@@ -129,13 +125,6 @@ We recorded 26 trials of voltage versus known mass: a loading sweep (0 → 1000 
 - **Error is concentrated at low mass.** Outliers cluster at 50–300 g (up to about 119 g), consistent with the noisy early data and with our observation that the 100 g reading was the weakest.
 - **The unloading sweep is clean.** Trials 14–19 (900 → 400 g) are all within 1% of the reading.
 - **The 1000 g repeat check landed within 0.2%.**
-
-<table>
-<tr>
-<td><img src="images/calibration_curve.png" alt="Calibration curve: voltage vs. mass with device model and least-squares fit"></td>
-<td><img src="images/error_by_weight.png" alt="Error of the on-device model by mass"></td>
-</tr>
-</table>
 
 ## 🛠️ Engineering Notes: What Went Wrong, and What We Fixed
 
