@@ -1,14 +1,16 @@
 <div align="center">
 
-# ⚖️ balance-beam
+# ⚖️ balance-beam-mass-force-sensor
 
 **A hand-built, microcontroller-based mass sensor: custom aluminum load cells, strain gauges, an instrumentation amplifier, and a 16-bit ADC feeding an ESP32 that reports mass in grams. Built for the Science Olympiad Division C _Detector Building_ event (🥈 2nd place at state).**
 
-![MicroPython](https://img.shields.io/badge/MicroPython-2B2728?style=flat-square&logo=micropython&logoColor=white)
-![ESP32](https://img.shields.io/badge/ESP32-E7352C?style=flat-square&logo=espressif&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![SPI](https://img.shields.io/badge/SPI-4B2E83?style=flat-square)
-![Analysis](https://img.shields.io/badge/analysis-pandas%20%7C%20matplotlib-150458?style=flat-square)
+<p align="center">
+  <img src="https://img.shields.io/badge/MicroPython-2B2728?style=flat-square&logo=micropython&logoColor=white" alt="MicroPython"/>&nbsp;&nbsp;
+  <img src="https://img.shields.io/badge/ESP32-E7352C?style=flat-square&logo=espressif&logoColor=white" alt="ESP32"/>&nbsp;&nbsp;
+  <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python"/>&nbsp;&nbsp;
+  <img src="https://img.shields.io/badge/SPI-4B2E83?style=flat-square" alt="SPI"/>&nbsp;&nbsp;
+  <img src="https://img.shields.io/badge/analysis-pandas%20%7C%20matplotlib-150458?style=flat-square" alt="Analysis with pandas and matplotlib"/>
+</p>
 
 </div>
 
@@ -21,7 +23,7 @@
 | **What** | A scale that senses 0–1000 g using strain gauges on load cells we machined from 6061-T6 aluminum |
 | **Signal chain** | 350 Ω strain gauges → INA125P instrumentation amp → AD7715 16-bit ADC (SPI) → ESP32 (MicroPython) |
 | **Calibration** | On-device two-point system calibration (empty pan + 1000 g), then proportional scaling to grams |
-| **Data** | 26-trial voltage-vs-mass dataset with loading and unloading sweeps data|
+| **Data** | 26-trial voltage-vs-mass dataset with loading and unloading sweeps |
 | **Measured accuracy** | Median absolute error **4.7 g**; 19 of 24 non-zero trials within 30 g (3% of full scale). See [Results](#-results-and-key-findings). |
 | **Competition** | Science Olympiad Division C, *Detector Building* · 🥈 2nd place at the state tournament |
 
@@ -29,7 +31,7 @@
 
 This project is a complete mass-sensing system built from scratch: mechanical design, analog electronics, firmware, and data analysis. Neither of us had done electrical engineering or microcontroller programming before, so we learned each part while building it.
 
-In Science Olympiad's **Detector Building** event, a team of two builds a student-made Mass/Force-sensing Device that measures unknown solid samples from 30 to 1,000 g and displays both the sensor voltage and the mass in grams. At the tournament we get a few minutes to calibrate against the event supervisor's scale, then measure each unknown sample. Accuracy, LED zone indication, a written test, and a design log are all scored.
+In Science Olympiad's **Detector Building** event, a team of two builds a student-made Mass/Force-sensing Device that measures unknown solid samples from 30 to 1,000 g and displays both the sensor voltage and the mass in grams. At the tournament, we get a few minutes to calibrate against the event supervisor's scale, then measure each unknown sample. Accuracy, LED zone indication, a written test, and a design log are all scored.
 
 ## 📋 Competition Context
 
@@ -43,7 +45,7 @@ Summarized from the Science Olympiad Division C Rules Manual (2023 edition). Rul
 | Display voltage and mass to the nearest 0.1 g | `main.py` prints both values (mass to 0.1 g) |
 | No code libraries for calibration | Calibration is implemented in our own code; `main.py` imports only `machine`, `time`, and `struct` |
 | LED zones set to ranges revealed on site | LED ranges are constants at the top of `main.py`, edited during the 5-minute setup |
-| Design log with 8 sections (photo, 10+ trial data table, scatter plot, model graph, equation, code printout, LED code, cover) | [`docs/design-log.pdf`](https://github.com/NehaM2025/balance-beam-mass-force-sensor/blob/main/Design%20Log%20Project%20Documentation.pdf) |
+| Design log with 8 sections (photo, 10+ trial data table, scatter plot, model graph, equation, code printout, LED code, cover) | Design log (see [Documentation](#-documentation)) |
 | Disclose digital fabrication used | Mylar strain-gauge guide designed in Onshape and cut on a Glowforge laser cutter (documented in the log) |
 
 **How it is scored:** each unknown mass earns an accuracy score of 15 points minus its relative error times a multiplier (20 at regionals, 30 at states, 40 at nationals), plus 4 points for lighting the correct LED. A written test (voltage dividers, force sensors, strain and resistance, calibration, and at states, Wheatstone bridges) and the design log make up the rest of the total.
@@ -78,7 +80,7 @@ flowchart LR
 - **Controller:** SparkFun ESP32 IoT RedBoard. Bypass capacitors (10 µF tantalum and 0.1 µF Mylar) keep the supply clean.
 - **Wiring:** 4-conductor shielded cable from the weighing plate to a 16-pin header on the breadboard.
 
-### Pin map (from `src/main.py`)
+### Pin map
 
 | Signal | ESP32 GPIO |
 |---|---|
@@ -105,7 +107,7 @@ mass (g) = average ADC reading × (1000 / calFull)
 
 ## 📊 Results and Key Findings
 
-We recorded 26 trials of voltage versus known mass: a loading sweep (0 → 1000 g), an unloading sweep (900 → 30 g), and two check points. We then replayed the on-device model (`mass = V × 1000 / 1.859`) against this data.
+We recorded 26 trials of voltage versus known mass: a loading sweep (0 → 1000 g), an unloading sweep (900 → 30 g), and two check points. We then replayed the on-device model (`mass = V × 1000 / 1.859`) against this data in the analysis notebook.
 
 | Metric (on-device two-point model) | Result |
 |---|---|
@@ -115,9 +117,9 @@ We recorded 26 trials of voltage versus known mass: a loading sweep (0 → 1000 
 | Mean error, masses ≥ 400 g | **1.2%** |
 | Worst single error | 118.9 g (trial 3, 50 g) |
 | R² of voltage vs. mass (least-squares fit) | 0.989 |
-| Estimated event accuracy score per mass (replaying our data, 24 trials) | **12.2 / 15** at regional scoring, **11.4 / 15** at state scoring |
+| Replayed accuracy score per mass (our 24 logged calibration trials) | **12.2 / 15** under regional scoring, **11.4 / 15** under state scoring |
 
-*The event-score estimate applies the manual's accuracy formula to our logged calibration data, with relative error as a fraction. It is not a tournament result, since the real unknown masses are different.*
+*The replayed score applies the manual's accuracy formula to our logged calibration data, with relative error as a fraction. It models the scoring formula and is not our tournament result: at the tournament, the device measured different unknown masses, and our placement also reflected the LED points, written test, and design log.*
 
 **Key findings**
 
@@ -126,30 +128,43 @@ We recorded 26 trials of voltage versus known mass: a loading sweep (0 → 1000 
 - **The unloading sweep is clean.** Trials 14–19 (900 → 400 g) are all within 1% of the reading.
 - **The 1000 g repeat check landed within 0.2%.**
 
+## 🗃️ Dataset
+
+The analysis uses 26 calibration trials, each pairing a known mass with the sensor voltage it produced.
+
+| Item | Description |
+|---|---|
+| Rows | 26 trials: a loading sweep (0 → 1000 g), an unloading sweep (900 → 30 g), and two check points |
+| Columns | Known mass in grams and measured sensor voltage in volts |
+
 ## 🛠️ Engineering Notes: What Went Wrong, and What We Fixed
 
 - **Regionals:** the code returned only zeros or full-scale values for days. We re-checked wiring, found missing connections and misplaced wires, and rebuilt the circuit around each chip's requirements.
-- **States:** after weeks of 6–10 hours of debugging a week, readings finally became non-zero, then stable. In our final design log, results were within 0–90 g of expected values, with the 100 g point the least accurate.
+- **States:** after weeks of debugging for 6–10 hours a week, readings finally became non-zero, then stable. Our final design log reported results within 0–90 g of the expected values, with the 100 g point the least accurate. The later analysis above, which uses the full 26-trial dataset, found a worst single error of 118.9 g.
 - **Lesson:** hardware and software bugs look identical (all zeros), so verifying each stage of the signal chain separately saved the most time.
 
 ## 🚀 Installation and Setup
+
+### 1. Set up the project locally
 
 **You need:** an ESP32 board flashed with [MicroPython](https://micropython.org/download/ESP32_GENERIC/), the circuit above, and [Thonny](https://thonny.org/) or `mpremote`.
 
 ```bash
 # 1. Clone
-git clone https://github.com/NehaM2025/balance-beam.git
-cd balance-beam
+git clone https://github.com/NehaM2025/balance-beam-mass-force-sensor.git
+cd balance-beam-mass-force-sensor
 
-# 2. Copy the firmware to the board (runs automatically on boot as main.py)
+# 2. Copy the firmware to the board (it runs automatically on boot as main.py)
 pip install mpremote
-mpremote connect auto cp src/main.py :main.py
+mpremote connect auto cp "scale_code_4_13testa (1).py" :main.py
 
 # 3. Open the serial console to follow the prompts
 mpremote connect auto repl
 ```
 
-**Using the scale**
+### 2. Calibrate and use the scale (the "training" step)
+
+This project has no trained model. The device learns its scale factor from the two calibration steps below, which are the equivalent of training.
 
 1. Power the board and watch the serial console.
 2. Empty the pan and press the **calibration** button.
@@ -157,30 +172,36 @@ mpremote connect auto repl
 4. Place an object and press the **measure** button. Read grams in the console and see the range LEDs.
 5. Remove the object and repeat.
 
-**Reproduce the data analysis (on your computer)**
+### 3. Evaluate performance (on your computer)
+
+Walk through the analysis step by step in the analysis notebook. It prints the error metrics and draws the calibration curve and the error-by-mass plot. Run it in Colab with the badge below, or locally:
 
 ```bash
-pip install -r requirements.txt
-python analysis/calibration_analysis.py
+pip install numpy pandas matplotlib notebook
+jupyter notebook calibration-analysis.ipynb
 ```
 
-This prints the error metrics and regenerates the plots in `images/`.
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/NehaM2025/balance-beam-mass-force-sensor/blob/main/calibration-analysis.ipynb)
+
+## 📚 Documentation
+
+| Document | What it covers |
+|---|---|
+| This README | User guide: setup, calibration, operation, and results |
+| [API Reference](API%20Reference.md) | Firmware reference: configuration constants, the `AD7715` driver, program flow, and troubleshooting |
+| [Design log (PDF)](Design%20Log%20Project%20Documentation.pdf) | Competition design log with build photos |
+| [Analysis notebook](calibration-analysis.ipynb) | Annotated walkthrough of the data analysis |
+| [Firmware source](scale_code_4_13testa%20%281%29.py) | The MicroPython code that runs on the ESP32 |
 
 ## 🗂️ Repository Structure
 
 ```
-balance-beam/
+balance-beam-mass-force-sensor/
 ├── README.md
-├── requirements.txt
-├── src/
-│   └── main.py                  # MicroPython firmware for the ESP32
-├── data/
-│   └── calibration-data.csv     # 26 trials: voltage vs. known mass
-├── analysis/
-│   └── calibration_analysis.py  # error metrics + plots
-├── docs/
-│   └── design-log.pdf           # full design log with build photos
-└── images/
+├── scale_code_4_13testa (1).py              # MicroPython firmware (copied to the board as main.py)
+├── calibration-analysis.ipynb               # annotated analysis notebook
+├── API Reference.md                         # firmware reference
+└── Design Log Project Documentation.pdf     # full design log with build photos
 ```
 
 ## 🔭 Potential Next Steps
