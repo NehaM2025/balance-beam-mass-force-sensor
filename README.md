@@ -21,7 +21,7 @@
 | **What** | A scale that senses 0–1000 g using strain gauges on load cells we machined from 6061-T6 aluminum |
 | **Signal chain** | 350 Ω strain gauges → INA125P instrumentation amp → AD7715 16-bit ADC (SPI) → ESP32 (MicroPython) |
 | **Calibration** | On-device two-point system calibration (empty pan + 1000 g), then proportional scaling to grams |
-| **Data** | 26-trial voltage-vs-mass dataset with loading and unloading sweeps ([`data/`](data/calibration-data.csv)) |
+| **Data** | 26-trial voltage-vs-mass dataset with loading and unloading sweeps data|
 | **Measured accuracy** | Median absolute error **4.7 g**; 19 of 24 non-zero trials within 30 g (3% of full scale). See [Results](#-results-and-key-findings). |
 | **Competition** | Science Olympiad Division C, *Detector Building* · 🥈 2nd place at the state tournament |
 
@@ -43,7 +43,7 @@ Summarized from the Science Olympiad Division C Rules Manual (2023 edition). Rul
 | Display voltage and mass to the nearest 0.1 g | `main.py` prints both values (mass to 0.1 g) |
 | No code libraries for calibration | Calibration is implemented in our own code; `main.py` imports only `machine`, `time`, and `struct` |
 | LED zones set to ranges revealed on site | LED ranges are constants at the top of `main.py`, edited during the 5-minute setup |
-| Design log with 8 sections (photo, 10+ trial data table, scatter plot, model graph, equation, code printout, LED code, cover) | [`docs/design-log.pdf`](docs/design-log.pdf) |
+| Design log with 8 sections (photo, 10+ trial data table, scatter plot, model graph, equation, code printout, LED code, cover) | [`docs/design-log.pdf`](https://github.com/NehaM2025/balance-beam-mass-force-sensor/blob/main/Design%20Log%20Project%20Documentation.pdf) |
 | Disclose digital fabrication used | Mylar strain-gauge guide designed in Onshape and cut on a Glowforge laser cutter (documented in the log) |
 
 **How it is scored:** each unknown mass earns an accuracy score of 15 points minus its relative error times a multiplier (20 at regionals, 30 at states, 40 at nationals), plus 4 points for lighting the correct LED. A written test (voltage dividers, force sensors, strain and resistance, calibration, and at states, Wheatstone bridges) and the design log make up the rest of the total.
@@ -105,7 +105,7 @@ mass (g) = average ADC reading × (1000 / calFull)
 
 ## 📊 Results and Key Findings
 
-We recorded 26 trials of voltage versus known mass: a loading sweep (0 → 1000 g), an unloading sweep (900 → 30 g), and two check points. We then replayed the on-device model (`mass = V × 1000 / 1.859`) against this data with [`analysis/calibration_analysis.py`](analysis/calibration_analysis.py).
+We recorded 26 trials of voltage versus known mass: a loading sweep (0 → 1000 g), an unloading sweep (900 → 30 g), and two check points. We then replayed the on-device model (`mass = V × 1000 / 1.859`) against this data.
 
 | Metric (on-device two-point model) | Result |
 |---|---|
