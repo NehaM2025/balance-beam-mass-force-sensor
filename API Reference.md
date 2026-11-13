@@ -1,6 +1,6 @@
 # balance-beam API reference
 
-Reference for the MicroPython firmware in [`src/main.py`](../src/main.py). It covers the configuration constants, the `AD7715` driver class, and the order in which the program runs. For wiring, setup, and how to use the scale, see the [README](../README.md).
+Reference for the MicroPython firmware in [`src/main.py`](https://github.com/NehaM2025/balance-beam-mass-force-sensor). It covers the configuration constants, the `AD7715` driver class, and the order in which the program runs. For wiring, setup, and how to use the scale, see the [README](https://github.com/NehaM2025/balance-beam-mass-force-sensor/blob/main/README.md).
 
 ## Contents
 
